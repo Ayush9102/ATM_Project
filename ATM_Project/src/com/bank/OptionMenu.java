@@ -1,80 +1,74 @@
 package com.bank;
 
+import java.util.Scanner;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Scanner;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
+
 
 public class OptionMenu 
 {
-	Scanner menuInput=new Scanner(System.in);
-	////each # rep 0-9
-	DecimalFormat moneyFormat=new DecimalFormat("'₹'###,##0.00");
-	HashMap<Integer,Account> data =new HashMap<Integer,Account>();
-	
-	
+	Scanner menuInput = new Scanner(System.in);
+	//each # represents 0-9
+	DecimalFormat moneyFormat = new DecimalFormat("'₹'###,##0.00");
+	HashMap<Integer , Account> data = new HashMap<Integer , Account>();
+
 	public void getLogin() throws IOException
 	{
-		boolean end=false;
-		int customerNumber =0;
-		int pinNumber=0;
+		boolean end = false;
+		int customerNumber = 0;
+		int pinNumber = 0;
 		while(!end)
 		{
 			try
 			{
-				System.out.println("\n Enter Your customer Number");
-				customerNumber=menuInput.nextInt();
-				System.out.println("\n Enter your Pin Number");
-				pinNumber=menuInput.nextInt();
+				System.out.println("\nEnter your customer number: ");
+				customerNumber = menuInput.nextInt();
+				System.out.println("\nEnter your PIN number");
+				pinNumber = menuInput.nextInt();
 				Iterator it = data.entrySet().iterator();
 				while(it.hasNext())
 				{
-					Map.Entry pair=(Map.Entry)it.next();
-					Account acc=(Account) pair.getValue();
-					if(data.containsKey(customerNumber)&& pinNumber==acc.getPinNumber())
+					Map.Entry pair = (Map.Entry)it.next();
+					Account acc = (Account)pair.getValue();
+					if(data.containsKey(customerNumber)&& pinNumber == acc.getPinNumber())
 					{
 						getAccountType(acc);
-						end =true;
+						end = true;
 						break;
-
 					}
-
-
 				}
 				if(!end)
 				{
-					System.out.println("\n Wrong Customer Number or Pin Number");
+					System.out.println("\nWrong Customer Number or PIN Number");
 				}
-
 			}
-			catch( InputMismatchException ex)
-
+			catch(InputMismatchException ex)
 			{
-				System.out.println("\n Invalid Character(s).Only Number are Allowed");
-
+				System.out.println("\nInvalid Character(s) Only Numbers are allowed.");
+				menuInput.next();
 			}
-
 		}
-
 	}
 	public void getAccountType(Account acc)
 	{
-		boolean end=false;
+		boolean end = false;
 		while(!end)
 		{
-			try {
-				System.out.println("\n Select the account you want to access :");
-				System.out.println("Type 1- Checking Account");
-				System.out.println("Type 2- Savings Account");
-				System.out.println("Type 3- Exit");
-				System.out.println("\nChoice:");
+			try
+			{
+				System.out.println("\nSelect the accpunt you want to access: ");
+				System.out.println("Type 1 - Checkings Account");
+				System.out.println("Type 2 - Savings Account");
+				System.out.println("Type 3 - Exit");
+				System.out.println("\nChoice: ");
 
-				int selection=menuInput.nextInt();
-				switch(selection) 
+				int selection = menuInput.nextInt();
+
+				switch(selection)
 				{
 				case 1:
 					getChecking(acc);
@@ -83,37 +77,32 @@ public class OptionMenu
 					getSaving(acc);
 					break;
 				case 3:
-					end=true;
-					break;
+					end = true;
 				default:
-					System.out.println("\nInvalid Choice");
-
+					System.out.println("\nInvalid Choice.");
 				}
-
 			}
-			catch(InputMismatchException ex)
+			catch (InputMismatchException ex)
 			{
-				System.out.println("\n Invalid Choice");
-				menuInput.next();//TODO handle Exception
-
+				System.out.println("\nInvalid Choice.");
+				menuInput.next();
 			}
-
 		}
 	}
 
-	public void getChecking(Account acc) 
+	public void  getChecking(Account acc)
 	{
-		boolean end=false;
+		boolean end = false;
 		while(!end)
 		{
 			try
 			{
-				System.out.println("\nCheckings Account");
-				System.out.println("Type 1 - View Balance ");
-				System.out.println("Type 2 - Withdraw Funds");
-				System.out.println("Type 3 - Deposit Funds");
-				System.out.println("Type 4 - Transfer Funds");
-				System.out.println("Type 5 - Exit");
+				System.out.println("\nCheckings Account: ");
+				System.out.println(" Type 1 - View Balance");
+				System.out.println(" Type 2 - Withdraw Funds");
+				System.out.println(" Type 3 - Deposit Funds");
+				System.out.println(" Type 4 - Transfer Funds");
+				System.out.println(" Type 5 - Exit");
 				System.out.println("\nChoice: ");
 
 				int selection = menuInput.nextInt();
@@ -121,7 +110,7 @@ public class OptionMenu
 				switch (selection)
 				{
 				case 1:
-					System.out.println("\n Checking Account Balance :"+moneyFormat.format(acc.getCheckingBalance()));
+					System.out.println("\nChecking Account Balance: " + moneyFormat.format(acc.getCheckingBalance()));
 					break;
 				case 2:
 					acc.getCheckingWithdrawInput();
@@ -133,47 +122,41 @@ public class OptionMenu
 					acc.getTransferInput("Checkings");
 					break;
 				case 5:
-					end =true;
+					end = true;
 					break;
 				default:
-					System.out.println("\nInvalid Choice:");
-
+					System.out.println("\nInvalid Choice");
+					menuInput.next();
 				}
-
 			}
-			catch(InputMismatchException e)
+			catch (InputMismatchException ex)
 			{
-				System.out.println("\n Invalid Choices");
+				System.out.println("\nInvalid Choice. ");
 				menuInput.next();
-
-
 			}
-
 		}
 	}
-
-
-	public void getSaving(Account acc) 
+	public void  getSaving(Account acc)
 	{
-		boolean end=false;
+		boolean end = false;
 		while(!end)
 		{
 			try
 			{
-				System.out.println("\nSaving Account");
-				System.out.println("Type 1 - View Balance ");
-				System.out.println("Type 2 - Withdraw Funds");
-				System.out.println("Type 3 - Deposit Funds");
-				System.out.println("Type 4 - Transfer Funds");
-				System.out.println("Type 5 - Exit");
-				System.out.println("\nChoice: ");
+				System.out.println("\nCheckings Account: ");
+				System.out.println(" Type 1 - View Balance");
+				System.out.println(" Type 2 - Withdraw Funds");
+				System.out.println(" Type 3 - Deposit Funds");
+				System.out.println(" Type 4 - Transfer Funds");
+				System.out.println(" Type 5 - Exit");
+				System.out.println("\nChoice:  ");
 
 				int selection = menuInput.nextInt();
 
 				switch (selection)
 				{
 				case 1:
-					System.out.println("\n Savings Account Balance :"+ moneyFormat.format(acc.getSavingBalance()));
+					System.out.println("\nSavings Account Balance: " + moneyFormat.format(acc.getSavingBalance()));
 					break;
 				case 2:
 					acc.getSavingWithdrawInput();
@@ -185,108 +168,94 @@ public class OptionMenu
 					acc.getTransferInput("Savings");
 					break;
 				case 5:
-					end =true;
+					end = true;
 					break;
 				default:
-					System.out.println("\nInvalid Choice:");
-
+					System.out.println("\nInvalid Choice");
 				}
-
 			}
-			catch(InputMismatchException e)
+			catch (InputMismatchException ex)
 			{
-				System.out.println("\n Invalid Choices");
+				System.out.println("\nInvalid Choice. ");
 				menuInput.next();
-
-
 			}
-
 		}
 	}
+
 	public void createAccount() throws IOException
 	{
-		int cst_no=0;
-		boolean end =false;
+		int cst_no = 0;
+		boolean end = false;
 		while(!end)
 		{
-			try 
+			try
 			{
-				System.out.println("\n Enter your Customer Number");
-				cst_no =menuInput.nextInt();
-				Iterator it=data.entrySet().iterator();
+				System.out.println("\nEnter your customer number  ");
+				cst_no = menuInput.nextInt();
+				Iterator it = data.entrySet().iterator();
 				while(it.hasNext())
 				{
 					Map.Entry pair = (Map.Entry) it.next();
 					if(!data.containsKey(cst_no))
 					{
-						end =true;
-
+						end  = true;
 					}
-
 				}
-				if(!end) 
+				if(!end)
 				{
-					System.out.println("\n This Customer Number is Already Registered");
-
-
+					System.out.println("\nThis customer number is already registered");
 				}
-
 			}
-			catch(InputMismatchException ex)
+			catch (InputMismatchException ex)
 			{
-				System.out.println("\n Invalid Choice");
+				System.out.println("\nInvalid Choice. ");
 				menuInput.next();
-
 			}
 
+			System.out.println("\nEnter PIN to be registered");
+			int pin = menuInput.nextInt();
+			data.put(cst_no, new  Account(cst_no, pin));
+			System.out.println("\nYour new account has been succesfully registered!");
+			System.out.println("\nredirecting to login................");
+			getLogin();				
 		}
-		System.out.println("\n Enter Pin To Be Registered");
-		int pin = menuInput.nextInt();
-		data.put(cst_no,new Account(cst_no,pin));
-		System.out.println("\n your New Account Has Succesfully Registered");
-		System.out.println("\n Redirecting to login ..............");
-		getLogin();
 	}
-	public void mainMenu() throws IOException
+	public void mainMenu()  throws IOException
 	{
-		data.put(952178,new Account(952141,191904,1000,5000));
-		data.put(952178,new Account(123,123,20000,50000));
-		boolean end=false;
+		data.put(952141, new Account(952141, 191904, 1000, 5000));
+		data.put(123,  new Account(123, 123, 20000, 50000));
+		boolean end = false;
 		while(!end)
 		{
-			try {
-				System.out.println("\n Type-1 Login");
-				System.out.println("\n Type-2 Create Account");
-				System.out.println("\n  Choices:");
-				int choice=menuInput.nextInt();
+			try
+			{
+				//						\n is used to get blank line
+				System.out.println("\n Type 1 - Login");
+				System.out.println(" Type 2 - create Account");
+				System.out.println("\nChoice: ");
+				int choice = menuInput.nextInt();
 				switch(choice)
 				{
 				case 1:
 					getLogin();
-					end =true;
+					end = true;
 					break;
 				case 2:
 					createAccount();
-					end =true;
+					end = true;
 					break;
 				default:
-					System.out.println("\nInvalid Choices");
-
+					System.out.println("\nInvalid Choice.");
 				}
-
 			}
-			catch(InputMismatchException ex)
+			catch (InputMismatchException ex)
 			{
-				System.out.println("\nInvalid Choice");
+				System.out.println("\nInvalid Choice.");
 				menuInput.next();
-
 			}
 		}
-
-		System.out.println("\n Thankyou for Using This ATM.\n");
+		System.out.println("\nThank you for using this ATM.\n");
 		menuInput.close();
 		System.exit(0);
-
 	}
-
 }
